@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>User Profile</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* Общие стили для всей страницы */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    /* Контейнер для профиля */
+    h1 {
+      color: #333;
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    /* Оформление для блока данных профиля */
+    div {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      margin: 20px auto;
+    }
+
+    /* Стили для текста */
+    p {
+      font-size: 18px;
+      color: #555;
+      margin: 10px 0;
+    }
+
+    /* Стили для ссылок */
+    a {
+      text-decoration: none;
+      color: #007bff;
+      font-size: 16px;
+      margin-top: 15px;
+      display: inline-block;
+    }
+
+    /* Стили для ссылки на редактирование */
+    a:hover {
+      text-decoration: underline;
+      color: #0056b3;
+    }
+
+    /* Стили для ссылки на главную */
+    a:last-of-type {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #28a745;
+    }
+
+    a:last-of-type:hover {
+      color: #218838;
+    }
+
+    /* Стили для сообщения об ошибке */
+    div.error {
+      background-color: #ffdddd;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<h1>User Profile</h1>
+
+<!-- Проверяем, что объект user не null -->
+<div th:if="${user != null}">
+  <p>Username: <span th:text="${user.userName}"></span></p>
+  <p>Email: <span th:text="${user.email}"></span></p>
+  <p>Password: <span th:text="'*****'"></span> <!-- Пароль не показываем для безопасности --></p>
+
+  <!-- Ссылка на редактирование профиля -->
+  <a th:href="@{/profile/edit}">Edit Profile</a>
+</div>
+
+<!-- Если пользователя нет, показываем сообщение об ошибке -->
+<div th:if="${user == null}">
+  <p th:text="${error}"></p>
+</div>
+
+<!-- Ссылка на главную -->
+<a href="/main">Back to Main</a>
+</body>
+</html>

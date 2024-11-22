@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+<div class="container-registration">
+  <h1>Register</h1>
+  <form th:action="@{/register}" method="post" th:object="${user}">
+    <label for="userName">Username:</label>
+    <input type="text" id="userName" name="userName" th:field="*{userName}" placeholder="Enter your username" required>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" th:field="*{password}" placeholder="Enter your password" required>
+    <label for="passwordConfirm">Confirm Password:</label>
+    <input type="password" id="passwordConfirm" name="passwordConfirm" th:field="*{passwordConfirm}" placeholder="Confirm your password" required>
+    <a th:href="@{/login}" class="back-to-login">Back to Login</a>
+    <button type="submit">Register</button>
+  </form>
+
+  <div th:if="${error}" class="alert alert-error">
+    <p th:text="${error}"></p>
+  </div>
+  <div th:if="${success}" class="alert alert-success">
+    <p th:text="${success}"></p>
+  </div>
+</div>
+</body>
+</html>
+
+
+
+<!--старый рабочее варик -->
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--  <title>Register</title>-->
+<!--  <link rel="stylesheet" href="/style.css" />-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Register</h1>-->
+
+<!--<form th:action="@{/register}" method="post" th:object="${user}">-->
+<!--  <label for="userName">Username</label>-->
+<!--  <input type="text" id="userName" name="userName" th:field="*{userName}" required />-->
+<!--  <br>-->
+<!--  <label for="password">Password</label>-->
+<!--  <input type="password" id="password" name="password" th:field="*{password}" required />-->
+<!--  <br>-->
+<!--  <label for="passwordConfirm">Confirm Password</label>-->
+<!--  <input type="password" id="passwordConfirm" name="passwordConfirm" th:field="*{passwordConfirm}" required />-->
+<!--  <br>-->
+<!--  <button type="submit">Register</button>-->
+<!--</form>-->
+
+<!--<div th:if="${error}" style="color:red;">-->
+<!--  <p th:text="${error}"></p>-->
+<!--</div>-->
+<!--<div th:if="${success}" style="color:green;">-->
+<!--  <p th:text="${success}"></p>-->
+
+<!--</div>-->
+<!--  <a th:href="@{/login}">Back to Login</a>-->
+<!--</body>-->
+<!--</html>-->
