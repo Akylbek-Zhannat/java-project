@@ -83,9 +83,13 @@
   <label for="description">Description:</label>
   <input type="text" id="description" name="description" th:value="${task.description}" required/>
 
-  <label for="status">Status:</label>
-  <input type="text" id="status" name="status" th:value="${task.status}" required/>
+<!--  <label for="status">Status:</label>-->
+<!--  <input type="text" id="status" name="status" th:value="${task.status}" required/>-->
 
+  <select name="status" required>
+    <option value="IN_PROGRESS">В процессе</option>
+    <option value="COMPLETED">Завершено</option>
+  </select>
   <label for="priority">Priority:</label>
   <input type="text" id="priority" name="priority" th:value="${task.priority}" required/>
 

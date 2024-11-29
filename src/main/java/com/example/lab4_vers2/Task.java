@@ -1,10 +1,12 @@
 package com.example.lab4_vers2;
 
+import jakarta.persistence.EnumType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import jakarta.persistence.Enumerated;
 
 @Document(collection = "Tasks")
 public class Task {
@@ -13,7 +15,14 @@ public class Task {
     private String name;
     private String title;
     private String description;
-    private String status;
+//    private String status;
+//    @Enumerated(EnumType.STRING)
+    private Task.Status status;
+
+    public enum Status {
+        IN_PROGRESS,
+        COMPLETED
+    }
     private String priority;
     private int userId;
     private int category_id;
@@ -23,12 +32,12 @@ public class Task {
 
 
 public Task(){}
-    public Task(String id, String name, String title, String description, String status, String priority, int userId, int category_id) {
+    public Task(String id, String name, String title, String description, String priority, int userId, int category_id) {
         this.id = id;
         this.name = name;
         this.title= title;
         this.description = description;
-        this.status = status;
+//        this.status = status;
         this.priority = priority;
         this.userId = userId;
         this.category_id = category_id;
@@ -82,11 +91,11 @@ public Task(){}
         this.description = description;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="/style.css"/>
+    <script>
+        let idleTime = 0;
+
+        function timerIncrement() {
+            idleTime++;
+            if (idleTime > 15) { //отсчет 15 секунд
+                window.location.href = '/login';
+            }
+        }
+        function resetTimer() {
+            idleTime = 0;
+        }
+        window.onload = function() {
+            setInterval(timerIncrement, 1000);
+            document.onmousemove = resetTimer;
+            document.onkeypress = resetTimer;
+            document.onclick = resetTimer;
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .btn {
+            display: block;
+            text-align: center;
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .btn:active {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+<h1>Добро пожаловать, Админ!</h1>
+
+<div class="button-container">
+    <a th:href="@{/Users}" class="btn">Go to Users</a>
+    <a th:href="@{/tasks}" class="btn">Go to Tasks</a>
+    <a th:href="@{/profile}" class="btn">Go to Profile</a>
+    <a th:href="@{/login}" class="btn">Go log out</a>
+</body>
+</html>

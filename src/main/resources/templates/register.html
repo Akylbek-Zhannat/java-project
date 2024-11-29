@@ -17,6 +17,10 @@
     <input type="password" id="password" name="password" th:field="*{password}" placeholder="Enter your password" required>
     <label for="passwordConfirm">Confirm Password:</label>
     <input type="password" id="passwordConfirm" name="passwordConfirm" th:field="*{passwordConfirm}" placeholder="Confirm your password" required>
+    <label>Роль:</label>
+    <select name="role" th:field="*{role}">
+      <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+    </select><br>
     <a th:href="@{/login}" class="back-to-login">Back to Login</a>
     <button type="submit">Register</button>
   </form>

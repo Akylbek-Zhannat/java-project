@@ -1,10 +1,16 @@
 package com.example.lab4_vers2;
-import org.springframework.data.annotation.Id;
+//import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 @Document(collection = "Users")
 public class User {
     @Id
@@ -13,7 +19,15 @@ public class User {
     private String email;
     private String password;
     private String passwordConfirm;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
     private LocalDateTime accountCreationDate;
+
+    public enum Role {
+        USER,
+        ADMIN
+    }
 
 
     public User(){}
@@ -71,5 +85,13 @@ public class User {
 
     public void setPasswordConfirm(String passwordConfirm) {
           this.passwordConfirm = passwordConfirm;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

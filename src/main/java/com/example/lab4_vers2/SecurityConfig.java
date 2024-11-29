@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -22,11 +21,13 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/register").permitAll()
+                        .requestMatchers("/mainAdmin").hasRole("ADMIN")
+                        .requestMatchers("/main").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/main", true)
+                        .defaultSuccessUrl("/default", true)
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
@@ -45,6 +46,69 @@ public class SecurityConfig {
 //        return customUserDetailsService;
 //    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//
+//
+//@Configuration
+//@EnableWebSecurity
+//public class SecurityConfig {
+//
+//    @Autowired
+//    private CustomUserDetailsService customUserDetailsService;
+//
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/login", "/register").permitAll()
+//                        .requestMatchers("/mainAdmin").hasRole("ADMIN")
+//                        .requestMatchers("/main").hasRole("USER")
+//                        .anyRequest().authenticated()
+//                )
+//                .formLogin(form -> form
+//                        .loginPage("/login")
+//                        .defaultSuccessUrl("/default", true)
+//                        .failureUrl("/login?error=true")
+//                        .permitAll()
+//                )
+//                .logout(logout -> logout.permitAll());
+//
+//        return http.build();
+//    }
+//
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+//}
+
+
+
+
+
+
+
 
 //@Configuration
 //@EnableWebSecurity
