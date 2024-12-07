@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Admin Profile</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    div {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      margin: 20px auto;
+    }
+
+    p {
+      font-size: 18px;
+      color: #555;
+      margin: 10px 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: #007bff;
+      font-size: 16px;
+      margin-top: 15px;
+      display: inline-block;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #0056b3;
+    }
+
+    a:last-of-type {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #28a745;
+    }
+
+    a:last-of-type:hover {
+      color: #218838;
+    }
+
+    div.error {
+      background-color: #ffdddd;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+  </style>
+</head>
+<body>
+<h1>Добро пожаловать, <span th:text="${user.userName}">Имя пользователя</span>!</h1>
+
+<div>
+  <img th:src="@{'/uploads/' + ${user.profilePicture}}" alt="Фото профиля" width="200">
+  <p th:if="${user.profilePicture == null}">Фото не загружено</p>
+</div>
+
+<form action="/profileAdmin/upload" method="post" enctype="multipart/form-data">
+  <input type="file" name="file">
+  <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+  <button type="submit">Загрузить фото</button>
+</form>
+
+<p th:if="${message != null}" th:text="${message}"></p>
+
+<div th:if="${user != null}">
+  <p>Username: <span th:text="${user.userName}"></span></p>
+  <p>Email: <span th:text="${user.email}"></span></p>
+  <p>Password: <span th:text="'******'"></span></p>
+  <a th:href="@{/profile/edit}">Редактировать профиль</a>
+</div>
+
+<div th:if="${error != null}">
+  <p th:text="${error}" class="error-message"></p>
+</div>
+
+<a href="/mainAdmin">На главную</a>
+
+  <h2>Отправить сообщение пользователю</h2>
+  <form action="/admin/email/send" method="post">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+
+    <label for="username">Имя пользователя:</label>
+    <input type="text" id="username" name="username" placeholder="Имя пользователя" required>
+    <br><br>
+
+    <label for="subject">Тема сообщения:</label>
+    <input type="text" id="subject" name="subject" placeholder="Тема сообщения" required>
+    <br><br>
+
+    <label for="content">Текст сообщения:</label>
+    <textarea id="content" name="content" rows="5" placeholder="Введите текст сообщения" required></textarea>
+    <br><br>
+
+    <button type="submit">Отправить сообщение</button>
+  </form>
+
+<a href="/mainAdmin">На главную</a>
+
+</body>
+</html>

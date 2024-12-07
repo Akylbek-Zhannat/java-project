@@ -92,6 +92,8 @@
   </select>
   <label for="priority">Priority:</label>
   <input type="text" id="priority" name="priority" th:value="${task.priority}" required/>
+  <label for="User">User:</label>
+  <input type="text" id="user" name="user" th:value="${task.userId}" required/>
 
   <button type="submit">Update Task</button>
 </form>

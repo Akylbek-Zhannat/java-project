@@ -16,7 +16,6 @@ public class lab4 {
         categoryCollection = database.getCollection("Categories");
     }
 
-//    // Создание пользователя
     public void createUser(User user) {
         try {
 //            String creationDate = user.getAccountCreationDate().format(DateTimeFormatter.ISO_DATE_TIME);
@@ -41,8 +40,8 @@ public class lab4 {
                     .append("description", task.getDescription())
                     .append("status", task.getStatus())
                     .append("priority", task.getPriority())
-                    .append("user_id", task.getUser_id())
-                    .append("category_id", task.getCategory_id())
+                    .append("user_id", task.getUserId())
+//                    .append("category_id", task.getCategoryId())
                     .append("account_creation_date", task.getCateCreationDateAsDate());
             taskCollection.insertOne(doc);
             System.out.println("Task created!! ");
@@ -62,7 +61,6 @@ public class lab4 {
         }
     }
 
-    // Чтение пользователя
     public void readUser(String id) {
         try {
             Document query = new Document("_id", id);
@@ -78,7 +76,7 @@ public class lab4 {
         }
     }
 
-    // Обновление пользователя
+
     public void updateUser(String id, String newName, String newEmail, String newPassword) {
         try {
             Document query = new Document("_id", id);
@@ -95,7 +93,7 @@ public class lab4 {
         }
     }
 
-    // Удаление пользователя
+
     public void deleteUser(String id) {
         try {
             Document query = new Document("_id", id);

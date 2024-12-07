@@ -8,7 +8,10 @@ import java.util.List;
 
 public interface TaskRepository extends MongoRepository<Task, String> {
     List<Task> findByTitleContaining(String title);
-    List<Task> findByUserId(int userId);
-//    List<Task> findByStatus(String status);
+
     Page<Task> findByStatus(Task.Status status, Pageable pageable);
+    Page<Task> findByUserId(int userId, Pageable pageable);
+
+    Page<Task> findAll(Pageable pageable);
+
 }

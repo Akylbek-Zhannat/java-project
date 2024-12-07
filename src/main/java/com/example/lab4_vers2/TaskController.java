@@ -3,6 +3,7 @@ package com.example.lab4_vers2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,13 +12,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 @Controller
 @RequestMapping("/tasks")
 public class TaskController {
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
@@ -29,25 +36,109 @@ public class TaskController {
 //        model.addAttribute("tasks", tasks);
 //        return "task-list";
 //    }
-    @GetMapping
-    public String getAllTasks(@RequestParam(defaultValue = "0") int page, Model model) {
-        int pageSize = 3;
-        Pageable pageable = PageRequest.of(page, pageSize);
 
-        Page<Task> taskPage = taskService.getAllTasks(pageable);
+//    @GetMapping
+//    public String getAllTasks(@RequestParam(defaultValue = "0") int page, Model model) {
+//        int pageSize = 3;
+//        Pageable pageable = PageRequest.of(page, pageSize);
+//
+//        Page<Task> taskPage = taskService.getAllTasks(pageable);
+//
+//        model.addAttribute("tasks", taskPage.getContent());
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("totalPages", taskPage.getTotalPages());
+//        return "task-list";
+//    }
+
+
+//    @GetMapping
+//    public String getUserTasks(
+//            @AuthenticationPrincipal org.springframework.security.core.userdetails.User principal,
+//            @RequestParam(defaultValue = "0") int page,
+//            Model model) {
+//
+//        int pageSize = 3;
+//
+//        User user = userRepository.findByUsername(principal.getUsername()).orElseThrow(() ->
+//                new RuntimeException("Пользователь не найден!")
+//        );
+//
+//        Page<Task> taskPage;
+//        if (user.getRole() == User.Role.ADMIN) {
+//            taskPage = taskService.getAllTasks(PageRequest.of(page, pageSize));
+//        } else {
+//            taskPage = taskService.getTasksForUser(user.getId(), PageRequest.of(page, pageSize));
+//        }
+//
+//        List<Map<String, String>> tasksWithCategories = taskPage.getContent().stream().map(task -> {
+//            Map<String, String> taskData = new HashMap<>();
+//            taskData.put("taskName", task.getName());
+//
+//            String categoryName = "Без категории";
+//            if (task.getCategoryId() != null) {
+//                categoryName = categoryRepository.findById(task.getCategoryId())
+//                        .map(Category::getName)
+//                        .orElse("Категория не найдена");
+//            }
+//            taskData.put("categoryName", categoryName);
+//            return taskData;
+//        }).toList();
+//
+//        model.addAttribute("tasks", tasksWithCategories);
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("totalPages", taskPage.getTotalPages());
+//
+//        return "task-list";
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+    @GetMapping
+    public String getUserTasks(@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal,
+            @RequestParam(defaultValue = "0") int page, Model model) {
+
+        int pageSize = 3;
+
+        User user = userRepository.findByUsername(principal.getUsername()).orElseThrow(() ->
+                new RuntimeException("Пользователь не найден!")
+        );
+
+        Page<Task> taskPage;
+        if (user.getRole() == User.Role.ADMIN) {
+            taskPage = taskService.getAllTasks(PageRequest.of(page, pageSize));
+        } else {
+            taskPage = taskService.getTasksForUser(user.getId(), PageRequest.of(page, pageSize));
+        }
 
         model.addAttribute("tasks", taskPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", taskPage.getTotalPages());
+
         return "task-list";
     }
+
+
 
 
     @GetMapping("/search")
     public String searchTasks(@RequestParam("title") String title, Model model) {
         List<Task> tasks = taskService.searchTasks(title);
+        System.out.println("Tasks found: " + tasks.size());
+        for (Task task : tasks) {
+            System.out.println("Task: " + task.getTitle() + ", " + task.getDescription());
+        }
+
         model.addAttribute("tasks", tasks);
-        model.addAttribute("searchQuery", title);
+        model.addAttribute("tasks", title);
         return "task-list";
     }
 //    @GetMapping("/filter")
@@ -89,24 +180,27 @@ public class TaskController {
 //        model.addAttribute("tasks", tasks);
 //        return "task-list";
 //    }
+
+
+
+
+
         @GetMapping("/filter")
         public String filterTasksByStatus(@RequestParam(value = "status", required = false) String status,
                                           @RequestParam(defaultValue = "0") int page,
                                           Model model) {
             int pageSize = 3;
             Pageable pageable = PageRequest.of(page, pageSize);
-
             Page<Task> taskPage;
-
             if (status == null || status.isEmpty()) {
-                taskPage = taskService.getAllTasks(pageable); // Общий список задач
+                taskPage = (Page<Task>) taskService.getAllTasks(pageable);
             } else {
                 try {
-                    Task.Status statusEnum = Task.Status.valueOf(status); // Преобразуем строку в Enum
-                    taskPage = taskService.filterTasksByStatus(statusEnum, pageable); // Фильтрация
+                    Task.Status statusEnum = Task.Status.valueOf(status);
+                    taskPage = taskService.filterTasksByStatus(statusEnum, pageable);
                 } catch (IllegalArgumentException e) {
                     model.addAttribute("message", "Некорректный статус: " + status);
-                    taskPage = Page.empty(); // Пустая страница при ошибке
+                    taskPage = Page.empty();
                 }
             }
 
@@ -116,11 +210,11 @@ public class TaskController {
             return "task-list";
         }
 
-    @GetMapping("/add")
-        public String showAddTaskForm(Model model) {
-            model.addAttribute("task", new Task());
-            return "task-add";
-        }
+//    @GetMapping("/add")
+//        public String showAddTaskForm(Model model) {
+//            model.addAttribute("task", new Task());
+//            return "task-add";
+//        }
 
 //    @PostMapping("/add")
 //    public String addTask(@ModelAttribute Task task) {

@@ -2,11 +2,13 @@ package com.example.lab4_vers2;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.net.InetAddress;
 
 @SpringBootApplication
 public class Lab4Vers2Application {
     public static void main(String[] args) {
         SpringApplication.run(Lab4Vers2Application.class, args);
+
 //
 //        lab4 users = new lab4();
 //        User user = new User(2, "Rakym", "Rakym@email.com", "123", "123");

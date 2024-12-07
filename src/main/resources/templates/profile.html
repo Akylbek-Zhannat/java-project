@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -68,23 +69,46 @@
       border-radius: 5px;
       margin-top: 20px;
     }
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
   </style>
 </head>
 <body>
-<h1>User Profile</h1>
+
+<h1>Добро пожаловать, <span th:text="${user.userName}">Имя пользователя</span>!</h1>
+
+<div>
+  <img th:src="@{'/uploads/' + ${user.profilePicture}}" alt="Фото профиля" width="200">
+  <p th:if="${user.profilePicture == null}">Фото не загружено</p>
+</div>
+
+<form action="/profile/upload" method="post" enctype="multipart/form-data">
+  <input type="file" name="file">
+  <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+  <button type="submit">Загрузить фото</button>
+</form>
+
+<p th:if="${message != null}" th:text="${message}"></p>
 
 <div th:if="${user != null}">
   <p>Username: <span th:text="${user.userName}"></span></p>
   <p>Email: <span th:text="${user.email}"></span></p>
-  <p>Password: <span th:text="'*****'"></span> </p>
+<!--  <p>Password: <span th:text="${user.password}"></span></p>-->
+  <p>Password: <span th:text="'******'"></span></p>
+<!--  <p>Password: <span th:text="${user.plainPassword}"></span></p>-->
 
-  <a th:href="@{/profile/edit}">Edit Profile</a>
+  <a th:href="@{/profile/edit}">Редактировать профиль</a>
 </div>
 
-<div th:if="${user == null}">
-  <p th:text="${error}"></p>
+
+<div th:if="${error != null}">
+  <p th:text="${error}" class="error-message"></p>
 </div>
 
-<a href="/main">Back to Main</a>
+<a href="/main">На главную</a>
 </body>
 </html>

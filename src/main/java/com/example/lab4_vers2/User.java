@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import org.springframework.data.annotation.Transient;
 import java.util.UUID;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     private LocalDateTime accountCreationDate;
-
+    private String profilePicture;
     public enum Role {
         USER,
         ADMIN
@@ -31,13 +32,14 @@ public class User {
 
 
     public User(){}
-    public User(int id, String username, String email, String password, String passwordConfirm) {
+    public User(int id, String username, String email, String password, String passwordConfirm, String profilePicture) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.passwordConfirm =  passwordConfirm;
         this.accountCreationDate = LocalDateTime.now();
+        this.profilePicture = profilePicture;
     }
 
     public int getId() {
@@ -90,8 +92,15 @@ public class User {
     public Role getRole() {
         return role;
     }
+    public String getProfilePicture() {
+        return profilePicture;
+    }
 
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
     public void setRole(Role role) {
         this.role = role;
     }
+
 }

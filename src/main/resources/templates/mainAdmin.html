@@ -10,7 +10,7 @@
 
         function timerIncrement() {
             idleTime++;
-            if (idleTime > 15) { //отсчет 15 секунд
+            if (idleTime > 15) {
                 window.location.href = '/login';
             }
         }
@@ -79,7 +79,8 @@
 <div class="button-container">
     <a th:href="@{/Users}" class="btn">Go to Users</a>
     <a th:href="@{/tasks}" class="btn">Go to Tasks</a>
-    <a th:href="@{/profile}" class="btn">Go to Profile</a>
+    <a th:href="@{/profileAdmin}" class="btn">Go to Profile</a>
     <a th:href="@{/login}" class="btn">Go log out</a>
+</div>
 </body>
 </html>

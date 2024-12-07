@@ -15,8 +15,7 @@ public class Task {
     private String name;
     private String title;
     private String description;
-//    private String status;
-//    @Enumerated(EnumType.STRING)
+
     private Task.Status status;
 
     public enum Status {
@@ -25,14 +24,14 @@ public class Task {
     }
     private String priority;
     private int userId;
-    private int category_id;
+
     private LocalDateTime categoryCreationDate;
 
 
 
 
 public Task(){}
-    public Task(String id, String name, String title, String description, String priority, int userId, int category_id) {
+    public Task(String id, String name, String title, String description, String priority, int userId) {
         this.id = id;
         this.name = name;
         this.title= title;
@@ -40,24 +39,17 @@ public Task(){}
 //        this.status = status;
         this.priority = priority;
         this.userId = userId;
-        this.category_id = category_id;
+
         this.categoryCreationDate = LocalDateTime.now();
     }
-    public int getUser_id() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUser_id(int userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public int getCategory_id() {
-        return category_id;
-    }
-
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
-    }
 
     public String getId() {
         return id;
